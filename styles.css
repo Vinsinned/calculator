@@ -1,28 +1,36 @@
 #calculator-base {
     background-color: gray;
-    height: 600px;
+    height: 700px;
     width: 340px;
     margin: auto;
     border-radius: 50px;
-    grid-template-areas: 
-    "1 2 3"
-    "4 5 6"
-    "7 8 9"
-    "zero"
-    ;
 }
 #inputOutput {
     background-color: white;
     width: 280px;
-    height: auto;
     margin: auto;
     border-radius: 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    font-size: 30px;
 }
 body {
     text-align: center;
 }
 p {
     color: lawngreen;
+}
+button {
+    width: 5.5rem;
+    height: 74px;
+    margin-bottom: 20px;
+}
+#back {
+    height: 20px;
+    width: 90px;
+    float: left;
+    margin-left: 20px;
+}
+#clear {
+    width: 50px;
+    height: 20px;
+    margin-left: 90px;
 }

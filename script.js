@@ -1,12 +1,14 @@
+//work on rounding and design and DONE after almost a week!
 const buttons = document.querySelectorAll('button');
 const operands = document.querySelectorAll('.operator');
 const startEquation = document.querySelector('#start');
 const display = document.createElement('p');
-display.style.cssText = "color: black;"
+const clear = document.querySelector('#clear');
+const backspace = document.querySelector('#back');
 const parentElement = document.querySelector('#inputOutput');
+display.style.cssText = "color: black;"
 //values in order to successfully run the equation
 let answer = null;
-let keepAnswer = null;
 let number1 = '';
 let number2 = '';
 let operator = null;
@@ -24,21 +26,21 @@ function multiply(num1, num2) {
 function divide(num1, num2) {
     return (num1 / num2);
 }
-function operate(num1, operator, num2) {
-    
+function round(answer) {
+    return +(Math.round(answer + "e+2")  + "e-2");
 }
-
-//Event listeners for clicks in the 'equals', operand, and numbers button
-startEquation.addEventListener('click', () => {
-    //starts the equation depending on operand value
+function operate() {
+    //turns the strings into integers
     let numb1 = parseInt(number1);
     let numb2 = parseInt(number2);
     if (operator != null && number1 != '' && number2 != '') {
         switch (operator) {
+            //checks operator value and runs respective equation, turns number1 into the answer and the rest back to empty
             case 'addition':
                 answer = add(numb1, numb2);
                 number1 = answer;
                 number2 = '';
+                 //operator is turned into null so that the operand function can keep working!
                 operator = null;
                 display.textContent = `${answer}`
                 break;
@@ -57,46 +59,79 @@ startEquation.addEventListener('click', () => {
                 display.textContent = `${answer}`
                 break;
             case 'division':
-                answer = divide(numb1, numb2);
-                number1 = answer;
-                number2 = '';
-                operator = null;
-                display.textContent = `${answer}`
-                break;
+                if (number1 == 0 && number2 == 0) {
+                    alert("You can't do that!")
+                } else {
+                    answer = divide(numb1, numb2);
+                    number1 = answer.toFixed(2);
+                    number2 = '';
+                    operator = null;
+                    display.textContent = `${answer}`
+                    break;
+                }
         }
     }
+}
+
+backspace.addEventListener('click', () => {
+    if (operator == null) {
+        number1 = number1.substring(0, number1.length -1);
+        display.textContent = `${number1}`
+    } else if (confirmNumber == true) {
+        number2 = number2.substring(0, number2.length - 1);
+        display.textContent = `${number2}`
+    }
+});
+
+clear.addEventListener('click', () => {
+    //when clicked, return all of the value back to empty
+    answer = null;
+    number1 = '';
+    number2 = '';
+    operator = null;
+    confirmNumber = false;
+    display.textContent = 'Empty';
+});
+
+startEquation.addEventListener('click', () => {
+    //when clicked, operate function is called back and since it is ran before this function, it works
+    operate();
 });
 
 operands.forEach((button) => {
     button.addEventListener('click',() => {
-        //assigns a value to operand and also officially stores number1 value and moves on to number2
-            if (operator == null) {
-                switch (button.id) {
-                    case 'plus':
-                        operator = 'addition';
-                        confirmNumber = true;
-                        break;
-                    case 'minus':
-                        operator = 'subtraction';
-                        confirmNumber = true;
-                        break;
-                    case 'multiply':
-                        operator = 'multiplication';
-                        confirmNumber = true;
-                        break;
-                    case 'divide':
-                        operator = 'division';
-                        confirmNumber = true;
-                        break;
-                }
-            } else {
-                
+        //if operator is already defined, call back operate() and it will turn the operator back to null!
+        if (operator != null) {
+            operate();
+        } else {
+            // sets operator value and also makes confirmNumber true to set number2 and not number1
+            switch (button.id) {
+                case 'plus':
+                    operator = 'addition';
+                    confirmNumber = true;
+                    break;
+                case 'minus':
+                    operator = 'subtraction';
+                    confirmNumber = true;
+                    break;
+                case 'multiply':
+                    operator = 'multiplication';
+                    confirmNumber = true;
+                    break;
+                case 'divide':
+                    operator = 'division';
+                    confirmNumber = true;
+                    break;
             }
+        }
+        
     });
 });
 
 buttons.forEach((button) => {
+    //adds value to number1 and number2
     button.addEventListener('click', () => {
+        //if operator is not pressed yet, define number1
         if (operator == null) {
             switch (button.id) {
                 case 'zero':
@@ -140,6 +175,7 @@ buttons.forEach((button) => {
                     display.textContent = `${number1}`
                     break;
                 }
+            // else if confirm is false from the operands function, sets number2
             } else if (confirm != false) {
                 switch (button.id) {
                     case 'zero':
@@ -183,10 +219,8 @@ buttons.forEach((button) => {
                     display.textContent = `${number2}`
                     break;
                 }
-                console.log('works');
-            } else {
-
             }
         });
     });
+display.textContent = 'Empty'
 parentElement.appendChild(display);
