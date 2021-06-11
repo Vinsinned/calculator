@@ -3,9 +3,10 @@ const buttons = document.querySelectorAll('button');
 const operands = document.querySelectorAll('.operator');
 const startEquation = document.querySelector('#start');
 const display = document.createElement('p');
-const clear = document.querySelector('#clear');
+const clearNum = document.querySelector('#clear');
 const backspace = document.querySelector('#back');
 const parentElement = document.querySelector('#inputOutput');
+const dot = document.querySelector('#decimal');
 display.style.cssText = "color: black;"
 //values in order to successfully run the equation
 let answer = null;
@@ -13,26 +14,28 @@ let number1 = '';
 let number2 = '';
 let operator = null;
 let confirmNumber = false;
+let numb1 = '';
+let numb2 = '';
 //basic operations for the calculator
 function add(num1, num2) {
-    return (num1 + num2);
+    return round((num1 + num2));
 }
 function subtract(num1, num2) {
-    return (num1 - num2);
+    return round((num1 - num2));
 }
 function multiply(num1, num2) {
-    return (num1 * num2);
+    return round((num1 * num2));
 }
 function divide(num1, num2) {
-    return (num1 / num2);
+    return round((num1 / num2));
 }
 function round(answer) {
     return +(Math.round(answer + "e+2")  + "e-2");
 }
 function operate() {
     //turns the strings into integers
-    let numb1 = parseInt(number1);
-    let numb2 = parseInt(number2);
+    numb1 = parseFloat(number1);
+    numb2 = parseFloat(number2);
     if (operator != null && number1 != '' && number2 != '') {
         switch (operator) {
             //checks operator value and runs respective equation, turns number1 into the answer and the rest back to empty
@@ -73,6 +76,16 @@ function operate() {
     }
 }
 
+clearNum.addEventListener('click', () => {
+    answer = null;
+    number1 = '';
+    number2 = '';
+    operator = null;
+    confirmNumber = false;
+    numb1 = '';
+    numb2 = '';
+    display.textContent = `${number1} ${number2}`
+})
 backspace.addEventListener('click', () => {
     if (operator == null) {
         number1 = number1.substring(0, number1.length -1);
@@ -81,16 +94,6 @@ backspace.addEventListener('click', () => {
         number2 = number2.substring(0, number2.length - 1);
         display.textContent = `${number2}`
     }
-});
-
-clear.addEventListener('click', () => {
-    //when clicked, return all of the value back to empty
-    answer = null;
-    number1 = '';
-    number2 = '';
-    operator = null;
-    confirmNumber = false;
-    display.textContent = 'Empty';
 });
 
 startEquation.addEventListener('click', () => {
@@ -127,6 +130,24 @@ operands.forEach((button) => {
         
     });
 });
+
+dot.addEventListener('click', () => {
+    if(operator == null) {
+        if (number1.includes('.')) {
+            alert('the value already contains a dot!');
+        } else if (number1 != '') {
+            number1 += '.';
+            display.textContent = `${number1}`
+        }
+    } else if (confirmNumber != false) {
+        if (number2.includes('.')) {
+            alert('the value already contains a dot!');
+        } else if (number2 != '') {
+            number2 += '.';
+            display.textContent = `${number2}`
+        }
+    }
+})
 
 buttons.forEach((button) => {
     //adds value to number1 and number2
@@ -222,5 +243,6 @@ buttons.forEach((button) => {
             }
         });
     });
-display.textContent = 'Empty'
+
+display.textContent = `${number1}`
 parentElement.appendChild(display);
