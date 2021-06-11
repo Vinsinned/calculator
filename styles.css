@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 #calculator-base {
-    background-color: gray;
+    background-color: #474747;
     height: 600px;
     width: 400px;
     margin: auto;
@@ -16,10 +17,12 @@
 }
 body {
     text-align: center;
+    background: #614e4e;
 }
 p {
     color: white;
     padding-top: 10px;
+    font-family: 'Roboto', sans-serif;
 }
 button {
     width: 5.5rem;
@@ -27,16 +30,47 @@ button {
     margin-bottom: 20px;
 }
 #back {
-    height: 20px;
-    width: 90px;
+    height: 30px;
+    width: 120px;
     float: left;
     margin-left: 20px;
 }
 #clear {
-    width: 50px;
-    height: 20px;
+    width: 60px;
+    height: 30px;
     margin-left: 180px;
 }
 button:active {
     transform: scale(1.1);
+}
+#title {
+    font-size: 20px;
+}
+.operator {
+    background-color: #3f8b9e;
+    color: #ffc296;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+}
+.number {
+    background-color: #e6894c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.outliers {
+    background-color: #eb5550;
+    color: #c2f2cd;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+}
+.others {
+    background-color: #7a21e8;
+    color: #e8b021;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
 }
